@@ -1,0 +1,762 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"name": "CTIByTidList",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "tid",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "tip",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "register_time",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "producer_address",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "cti_hash",
+						"type": "string"
+					},
+					{
+						"internalType": "int256",
+						"name": "price",
+						"type": "int256"
+					},
+					{
+						"internalType": "string",
+						"name": "ip",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "threat_score",
+						"type": "uint256"
+					},
+					{
+						"internalType": "int256",
+						"name": "confidence",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "consumption_count",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "transaction_value",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "validation_count",
+						"type": "int256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "feedback_score",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "CTIByTipListGroup",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "tid",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "tip",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "register_time",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "producer_address",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "cti_hash",
+						"type": "string"
+					},
+					{
+						"internalType": "int256",
+						"name": "price",
+						"type": "int256"
+					},
+					{
+						"internalType": "string",
+						"name": "ip",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "threat_score",
+						"type": "uint256"
+					},
+					{
+						"internalType": "int256",
+						"name": "confidence",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "consumption_count",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "transaction_value",
+						"type": "int256"
+					},
+					{
+						"internalType": "int256",
+						"name": "validation_count",
+						"type": "int256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "feedback_score",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "tid",
+						"type": "string"
+					}
+				],
+				"name": "GetCTIByTid",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "tid",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "tip",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "register_time",
+								"type": "uint256"
+							},
+							{
+								"internalType": "address",
+								"name": "producer_address",
+								"type": "address"
+							},
+							{
+								"internalType": "string",
+								"name": "cti_hash",
+								"type": "string"
+							},
+							{
+								"internalType": "string[]",
+								"name": "tags",
+								"type": "string[]"
+							},
+							{
+								"internalType": "int256",
+								"name": "price",
+								"type": "int256"
+							},
+							{
+								"internalType": "string",
+								"name": "ip",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "threat_score",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string[]",
+								"name": "iocs",
+								"type": "string[]"
+							},
+							{
+								"internalType": "int256",
+								"name": "confidence",
+								"type": "int256"
+							},
+							{
+								"internalType": "int256",
+								"name": "consumption_count",
+								"type": "int256"
+							},
+							{
+								"internalType": "int256",
+								"name": "transaction_value",
+								"type": "int256"
+							},
+							{
+								"internalType": "int256",
+								"name": "validation_count",
+								"type": "int256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "feedback_score",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct RegistCTI.CTI",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "tip",
+						"type": "string"
+					}
+				],
+				"name": "GetCTIByTip",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "tid",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "tip",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "register_time",
+								"type": "uint256"
+							},
+							{
+								"internalType": "address",
+								"name": "producer_address",
+								"type": "address"
+							},
+							{
+								"internalType": "string",
+								"name": "cti_hash",
+								"type": "string"
+							},
+							{
+								"internalType": "string[]",
+								"name": "tags",
+								"type": "string[]"
+							},
+							{
+								"internalType": "int256",
+								"name": "price",
+								"type": "int256"
+							},
+							{
+								"internalType": "string",
+								"name": "ip",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "threat_score",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string[]",
+								"name": "iocs",
+								"type": "string[]"
+							},
+							{
+								"internalType": "int256",
+								"name": "confidence",
+								"type": "int256"
+							},
+							{
+								"internalType": "int256",
+								"name": "consumption_count",
+								"type": "int256"
+							},
+							{
+								"internalType": "int256",
+								"name": "transaction_value",
+								"type": "int256"
+							},
+							{
+								"internalType": "int256",
+								"name": "validation_count",
+								"type": "int256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "feedback_score",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct RegistCTI.CTI[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "tid",
+						"type": "string"
+					}
+				],
+				"name": "GetFeedbackStats",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "average",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "count",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "tid",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "tip",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "cti_hash",
+						"type": "string"
+					},
+					{
+						"internalType": "string[]",
+						"name": "tags",
+						"type": "string[]"
+					},
+					{
+						"internalType": "int256",
+						"name": "price",
+						"type": "int256"
+					},
+					{
+						"internalType": "string",
+						"name": "ip",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "threat_score",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string[]",
+						"name": "iocs",
+						"type": "string[]"
+					},
+					{
+						"internalType": "int256",
+						"name": "confidence",
+						"type": "int256"
+					}
+				],
+				"name": "Register",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "tid",
+						"type": "string"
+					},
+					{
+						"internalType": "int256",
+						"name": "transactionAmount",
+						"type": "int256"
+					}
+				],
+				"name": "UpdateConsumption",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "tid",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "feedback",
+						"type": "uint256"
+					}
+				],
+				"name": "UpdateFeedbackScore",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "tid",
+						"type": "string"
+					}
+				],
+				"name": "UpdateValidation",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "cti_hash",
+						"type": "string"
+					}
+				],
+				"name": "checkDuplicate",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "cti_hash",
+						"type": "string"
+					}
+				],
+				"name": "checkSimilarity",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "hash1",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "hash2",
+						"type": "bytes32"
+					}
+				],
+				"name": "detectCompositeSimilarity",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "new_cti_hash",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "existing_cti_hash",
+						"type": "string"
+					}
+				],
+				"name": "detectSimilarity",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "similarityScore",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"name": "duplicateCTICount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"name": "existingCTIHashes",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "feedbackScores",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "ip",
+						"type": "string"
+					},
+					{
+						"internalType": "string[]",
+						"name": "tags",
+						"type": "string[]"
+					},
+					{
+						"internalType": "string[]",
+						"name": "iocs",
+						"type": "string[]"
+					}
+				],
+				"name": "generateCompositeHash",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "pure",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "hasScored",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "reportedDuplicates",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"details": "威胁情报注册合约，支持链下相似度检测融合判断",
+			"kind": "dev",
+			"methods": {},
+			"title": "RegistCTI",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {
+				"GetFeedbackStats(string)": {
+					"notice": "获取某 CTI 的平均反馈分数和总评分次数"
+				},
+				"UpdateFeedbackScore(string,uint256)": {
+					"notice": "消费者提交对情报的反馈评分（用于判断情报质量）"
+				}
+			},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"ctiIncentiveDedupRegistry/ctiIncentiveDedupRegistry.sol": "RegistCTI"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": [],
+		"viaIR": true
+	},
+	"sources": {
+		"ctiIncentiveDedupRegistry/ctiIncentiveDedupRegistry.sol": {
+			"keccak256": "0x7c7bff9375685adbc155f637b002c58d5d31626831863abecefa5d7f7ddd5915",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://d1c5666b92fa5c5699e77bd9fa8b3f114a85b51fa13053166b7ff4147cc0fb58",
+				"dweb:/ipfs/QmeypD49bXVYAdCJ16TiQwMsbHhNA59hFatDjgzaLFGUXJ"
+			]
+		}
+	},
+	"version": 1
+}

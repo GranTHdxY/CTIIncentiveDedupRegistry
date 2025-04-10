@@ -1,0 +1,517 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address payable",
+						"name": "addr",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "txid",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "consumer",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "producer",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "delegator",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "consumerReward",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "producerReward",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "delegatorReward",
+						"type": "uint256"
+					}
+				],
+				"name": "CTIChecked",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "delegator_address",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "txid",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "pay",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "pubkey",
+						"type": "string"
+					}
+				],
+				"name": "ConsumerAssignmentComing",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "consumer",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "ipfshash",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "txid",
+						"type": "string"
+					}
+				],
+				"name": "IPFSHashComing",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address[]",
+						"name": "addresses",
+						"type": "address[]"
+					},
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "producer",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "tid",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "ipfshash",
+						"type": "string"
+					}
+				],
+				"name": "ProducerAssignmentComing",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "txid",
+						"type": "string"
+					}
+				],
+				"name": "CheckCTI",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "tid",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "txid",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "addr",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "pubkey",
+						"type": "string"
+					}
+				],
+				"name": "ConsumerSelectDelegator",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "tid",
+						"type": "string"
+					}
+				],
+				"name": "GetAssignmentVerified",
+				"outputs": [
+					{
+						"internalType": "address[]",
+						"name": "",
+						"type": "address[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "tid",
+						"type": "string"
+					},
+					{
+						"internalType": "address[]",
+						"name": "delegators_address",
+						"type": "address[]"
+					},
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "producer_price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "delegator_price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "ipfsHash",
+						"type": "string"
+					}
+				],
+				"name": "ProducerSelectDelegator",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "ipfshash",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "consumer",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "txid",
+						"type": "string"
+					}
+				],
+				"name": "UploadCTI",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "tid",
+						"type": "string"
+					},
+					{
+						"internalType": "bool",
+						"name": "opt",
+						"type": "bool"
+					}
+				],
+				"name": "VerifyAssignment",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "txid",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "pubkey",
+						"type": "string"
+					}
+				],
+				"name": "consumerUpgrade",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					}
+				],
+				"name": "getPoints",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "maxDiscountPercent",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "pointValueInWei",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "points",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "val",
+						"type": "uint256"
+					}
+				],
+				"name": "setMaxDiscountPercent",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "val",
+						"type": "uint256"
+					}
+				],
+				"name": "setPointValueInWei",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"name": "tx_list",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "tid",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "txid",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "producer",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "delegator",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "consumer",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "producer_price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "delegator_price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "int256",
+						"name": "status",
+						"type": "int256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"ctiIncentiveDedupRegistry/ctiIncentiveDedupRegistry.sol": "AssignmentContract"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": [],
+		"viaIR": true
+	},
+	"sources": {
+		"ctiIncentiveDedupRegistry/ctiIncentiveDedupRegistry.sol": {
+			"keccak256": "0x7c7bff9375685adbc155f637b002c58d5d31626831863abecefa5d7f7ddd5915",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://d1c5666b92fa5c5699e77bd9fa8b3f114a85b51fa13053166b7ff4147cc0fb58",
+				"dweb:/ipfs/QmeypD49bXVYAdCJ16TiQwMsbHhNA59hFatDjgzaLFGUXJ"
+			]
+		}
+	},
+	"version": 1
+}

@@ -1,0 +1,203 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"stateMutability": "payable",
+				"type": "fallback"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "DelegatorInserted",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "GetContractBalance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "ListDelegator",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "name",
+								"type": "string"
+							},
+							{
+								"internalType": "address",
+								"name": "addr",
+								"type": "address"
+							},
+							{
+								"internalType": "int256",
+								"name": "reputation",
+								"type": "int256"
+							},
+							{
+								"internalType": "string",
+								"name": "pubkey",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "time",
+								"type": "uint256"
+							}
+						],
+						"internalType": "struct DelegatorContract.Delegator[]",
+						"name": "",
+						"type": "tuple[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "pubkey",
+						"type": "string"
+					}
+				],
+				"name": "Register",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "addr",
+						"type": "address"
+					}
+				],
+				"name": "isDelegator",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "list",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "address",
+						"name": "addr",
+						"type": "address"
+					},
+					{
+						"internalType": "int256",
+						"name": "reputation",
+						"type": "int256"
+					},
+					{
+						"internalType": "string",
+						"name": "pubkey",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "time",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "receive"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"ctiIncentiveDedupRegistry/ctiIncentiveDedupRegistry.sol": "DelegatorContract"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": [],
+		"viaIR": true
+	},
+	"sources": {
+		"ctiIncentiveDedupRegistry/ctiIncentiveDedupRegistry.sol": {
+			"keccak256": "0x7c7bff9375685adbc155f637b002c58d5d31626831863abecefa5d7f7ddd5915",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://d1c5666b92fa5c5699e77bd9fa8b3f114a85b51fa13053166b7ff4147cc0fb58",
+				"dweb:/ipfs/QmeypD49bXVYAdCJ16TiQwMsbHhNA59hFatDjgzaLFGUXJ"
+			]
+		}
+	},
+	"version": 1
+}
