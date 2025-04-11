@@ -1,0 +1,98 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"name": "beforeAll",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "checkWinninProposalWithReturnValue",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "checkWinningProposal",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"tests/Ballot_test.sol": "BallotTest"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": [],
+		"viaIR": true
+	},
+	"sources": {
+		"contracts/3_Ballot.sol": {
+			"keccak256": "0xcbd9edecd754a38b42e18274ae4c89792eb3a3ee3de804019b618bed7fd6b1c1",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://7ffead843527326b6a8a6f15fc333304ba2c298cd8f61ac57dd11aa166d9c06d",
+				"dweb:/ipfs/QmQPGfh1jmREFZbvo6nsFgjX8WLoPeqUAFmsV3BrdN92NS"
+			]
+		},
+		"hardhat/console.sol": {
+			"keccak256": "0xf2560b5386574153057104d19a9e68a32ee912cf23c0c8df1fe9a0607f42d543",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://a63166e036b040826baa513772451a79925daa304b38749100efb089ac07cdc2",
+				"dweb:/ipfs/QmUtMTxUFKU6a5oFXsEJnTPvb3QPb7GDDmSv5yZ1jFHDwR"
+			]
+		},
+		"remix_tests.sol": {
+			"keccak256": "0xe2783cdc204cba8c72494119339f1d90f9022b15d6c718c668b7f097d8e29787",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://bb6a22e64c7f16bcaab63b1c1a1b269d5be8a6d37bdd9dec1718477ab916b18e",
+				"dweb:/ipfs/QmdkW1tT5iadBvaHMCoskhDGZKnfdg8o1D9CcoQYtdJet7"
+			]
+		},
+		"tests/Ballot_test.sol": {
+			"keccak256": "0xd10d2d511611f8a5f6f04151e8b534c4ac159ec184b89ef0db0f2205f8ab1600",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://aa821f5ac1766e88c159d35afce8ce0e96fef9d34af2916d92828e26ae2c4d35",
+				"dweb:/ipfs/QmZmhrkUtMSJtbiNEqFXPsm1xWBhkqcjFh5ZWYgNxfcEzQ"
+			]
+		}
+	},
+	"version": 1
+}

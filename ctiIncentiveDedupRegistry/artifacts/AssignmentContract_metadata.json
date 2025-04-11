@@ -21,55 +21,6 @@
 				"inputs": [
 					{
 						"indexed": false,
-						"internalType": "string",
-						"name": "txid",
-						"type": "string"
-					},
-					{
-						"indexed": false,
-						"internalType": "address",
-						"name": "consumer",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "address",
-						"name": "producer",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "address",
-						"name": "delegator",
-						"type": "address"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "consumerReward",
-						"type": "uint256"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "producerReward",
-						"type": "uint256"
-					},
-					{
-						"indexed": false,
-						"internalType": "uint256",
-						"name": "delegatorReward",
-						"type": "uint256"
-					}
-				],
-				"name": "CTIChecked",
-				"type": "event"
-			},
-			{
-				"anonymous": false,
-				"inputs": [
-					{
-						"indexed": false,
 						"internalType": "address",
 						"name": "delegator_address",
 						"type": "address"
@@ -329,96 +280,6 @@
 			{
 				"inputs": [
 					{
-						"internalType": "address",
-						"name": "user",
-						"type": "address"
-					}
-				],
-				"name": "getPoints",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "maxDiscountPercent",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [],
-				"name": "pointValueInWei",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "",
-						"type": "address"
-					}
-				],
-				"name": "points",
-				"outputs": [
-					{
-						"internalType": "uint256",
-						"name": "",
-						"type": "uint256"
-					}
-				],
-				"stateMutability": "view",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "val",
-						"type": "uint256"
-					}
-				],
-				"name": "setMaxDiscountPercent",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
-						"internalType": "uint256",
-						"name": "val",
-						"type": "uint256"
-					}
-				],
-				"name": "setPointValueInWei",
-				"outputs": [],
-				"stateMutability": "nonpayable",
-				"type": "function"
-			},
-			{
-				"inputs": [
-					{
 						"internalType": "string",
 						"name": "",
 						"type": "string"
@@ -489,7 +350,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"ctiIncentiveDedupRegistry/ctiIncentiveDedupRegistry.sol": "AssignmentContract"
+			"ctiIncentiveDedupRegistry/ThreatTest.sol": "AssignmentContract"
 		},
 		"evmVersion": "cancun",
 		"libraries": {},
@@ -504,12 +365,12 @@
 		"viaIR": true
 	},
 	"sources": {
-		"ctiIncentiveDedupRegistry/ctiIncentiveDedupRegistry.sol": {
-			"keccak256": "0x7c7bff9375685adbc155f637b002c58d5d31626831863abecefa5d7f7ddd5915",
+		"ctiIncentiveDedupRegistry/ThreatTest.sol": {
+			"keccak256": "0xfaf039500e176026206cce2f14afa795a4a1eccb7d8d98e6f1d7d6fc68bc241a",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://d1c5666b92fa5c5699e77bd9fa8b3f114a85b51fa13053166b7ff4147cc0fb58",
-				"dweb:/ipfs/QmeypD49bXVYAdCJ16TiQwMsbHhNA59hFatDjgzaLFGUXJ"
+				"bzz-raw://132488e3dc82322745c4413fbb8aaf38f051f4535a90ca165d79fd4263429e30",
+				"dweb:/ipfs/QmQNzkM1Arx2DC52oWLhQaRzAZDn8YhVf9rHcrcYh1a6Z3"
 			]
 		}
 	},
