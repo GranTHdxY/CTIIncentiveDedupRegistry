@@ -8,8 +8,13 @@
 			{
 				"inputs": [
 					{
-						"internalType": "address payable",
-						"name": "addr",
+						"internalType": "address",
+						"name": "rewardAddr",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "delegatorAddr",
 						"type": "address"
 					}
 				],
@@ -278,6 +283,19 @@
 				"type": "function"
 			},
 			{
+				"inputs": [],
+				"name": "reward",
+				"outputs": [
+					{
+						"internalType": "contract RewardPointsContract",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
 				"inputs": [
 					{
 						"internalType": "string",
@@ -350,26 +368,26 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"ctiIncentiveDedupRegistry/ThreatTest1.sol": "AssignmentContract"
+			"ctiIncentiveDedupRegistry/ThreatTest11.sol": "AssignmentContract"
 		},
-		"evmVersion": "cancun",
+		"evmVersion": "istanbul",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
 	},
 	"sources": {
-		"ctiIncentiveDedupRegistry/ThreatTest1.sol": {
-			"keccak256": "0xc8ae393fc58ff2a8e9edf6e24d4cb9b2e02c94b78c8dbd767589347d1cc3d164",
+		"ctiIncentiveDedupRegistry/ThreatTest11.sol": {
+			"keccak256": "0x7945edd4b448bc0498a3fafd02cd5b6a092be28263e2f09dc0e6acdcddb61a87",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://09c22b3ebf70ed1b5d7127c30720e32712f3b461d45d1be4d724f49db653a74c",
-				"dweb:/ipfs/QmZVznzC54Ev2Rv4gZRzcJbD7TckGTeQyJ46UkJqPjcy1Z"
+				"bzz-raw://f1b56a606d0076d26de9d43c0dfeb2d47203790ba951cfec9ec5bb4307ef405b",
+				"dweb:/ipfs/QmUo7ENbphgZux9eWqNkdmit2hhG64WnGRD9ZTYv8tXaix"
 			]
 		}
 	},
