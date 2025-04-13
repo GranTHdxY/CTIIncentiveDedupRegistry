@@ -1,0 +1,234 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "tid",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "cti_hash",
+						"type": "string"
+					}
+				],
+				"name": "CTIRegistered",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"name": "CTIByTid",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "tid",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "tip",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "cti_hash",
+						"type": "string"
+					},
+					{
+						"internalType": "int256",
+						"name": "price",
+						"type": "int256"
+					},
+					{
+						"internalType": "string",
+						"name": "ip",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "threat_score",
+						"type": "uint256"
+					},
+					{
+						"internalType": "int256",
+						"name": "confidence",
+						"type": "int256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "tid",
+						"type": "string"
+					}
+				],
+				"name": "GetCTI",
+				"outputs": [
+					{
+						"components": [
+							{
+								"internalType": "string",
+								"name": "tid",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "tip",
+								"type": "string"
+							},
+							{
+								"internalType": "string",
+								"name": "cti_hash",
+								"type": "string"
+							},
+							{
+								"internalType": "string[]",
+								"name": "tags",
+								"type": "string[]"
+							},
+							{
+								"internalType": "int256",
+								"name": "price",
+								"type": "int256"
+							},
+							{
+								"internalType": "string",
+								"name": "ip",
+								"type": "string"
+							},
+							{
+								"internalType": "uint256",
+								"name": "threat_score",
+								"type": "uint256"
+							},
+							{
+								"internalType": "string[]",
+								"name": "iocs",
+								"type": "string[]"
+							},
+							{
+								"internalType": "int256",
+								"name": "confidence",
+								"type": "int256"
+							}
+						],
+						"internalType": "struct SimpleCTIRegistry.CTI",
+						"name": "",
+						"type": "tuple"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "tid",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "tip",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "cti_hash",
+						"type": "string"
+					},
+					{
+						"internalType": "string[]",
+						"name": "tags",
+						"type": "string[]"
+					},
+					{
+						"internalType": "int256",
+						"name": "price",
+						"type": "int256"
+					},
+					{
+						"internalType": "string",
+						"name": "ip",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "threat_score",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string[]",
+						"name": "iocs",
+						"type": "string[]"
+					},
+					{
+						"internalType": "int256",
+						"name": "confidence",
+						"type": "int256"
+					}
+				],
+				"name": "Register",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"ctiIncentiveDedupRegistry/minimalCtiContract.sol": "SimpleCTIRegistry"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": [],
+		"viaIR": true
+	},
+	"sources": {
+		"ctiIncentiveDedupRegistry/minimalCtiContract.sol": {
+			"keccak256": "0x5683ffbcdb3752b21091119abcc24fbbe6d88781f671e407e0d2e95cd67bc982",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://76d9610059088a14b8afad001bb014ee28b8d77c61d2bccd4ad94fcb12930ba7",
+				"dweb:/ipfs/QmYTmEe7v3pzockKk4gVVkpoHT6UbjYTP1ZvX6mTyCQ9Bp"
+			]
+		}
+	},
+	"version": 1
+}
