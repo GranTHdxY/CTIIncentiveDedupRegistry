@@ -22,8 +22,11 @@ contract RegistCTI {
 
     mapping(string => CTI) public CTIByTidList;
     mapping(string => CTI[]) public CTIByTipListGroup;
+    mapping(string => mapping(address => bool)) public hasScored; // tid => user => 用于判断情报是否已评分
+
 
     CTI[] public allCtiHashes;                                   // 用于存储已上传cti的哈希值
+    AssignmentContract public assignment;
     RewardPointsContract public reward;
 
     uint public similarityThreshold = 10; // 设置阈值，Hamming距离大于此值表示相似度过高
@@ -91,6 +94,21 @@ contract RegistCTI {
         return hashes;
     }
     
+    function rateCTI(string calldata tid, uint8 score) external {
+        require(score >= 1 && score <= 10, "Invalid score (1-10)");
+        require(!hasScored[tid][msg.sender], "Already rated");
+
+        // ✅是否完成交易
+        require(assignment.hasConsumerBought(tid, msg.sender), "Only consumers who completed the deal can rate");
+
+        CTI storage cti = CTIByTidList[tid];
+        require(cti.producer_address != address(0), "CTI not found");
+
+        cti.feedback_score += int256(uint256(score));
+        hasScored[tid][msg.sender] = true;
+    }
+
+
     //排序后返回情报列表
     struct CTIWithWeight {
         string tid;
@@ -103,8 +121,9 @@ contract RegistCTI {
         int feedback_score;
     }
 
-    constructor(address rewardAddr) {
+    constructor(address rewardAddr,address assignmentAddr) {
         reward = RewardPointsContract(rewardAddr);
+        assignment = AssignmentContract(assignmentAddr);
     }
 
     function listCTIByWeight() external view returns (CTIWithWeight[] memory) {
@@ -179,6 +198,8 @@ contract AssignmentContract {
     event ProducerAssignmentComing(address[] addresses,address producer,string tid,string ipfshash);
     event ConsumerAssignmentComing(address delegator_address,string txid,uint pay, string pubkey);
     event IPFSHashComing(address consumer,string ipfshash,string txid);
+    string[] public txids; //保存所有发生过的交易的id
+
 
     //生产者选择委托者
     function ProducerSelectDelegator(
@@ -204,33 +225,43 @@ contract AssignmentContract {
         address addr,
         string calldata pubkey
     ) external payable {
-        bool f;
-        f=false;
-        Assignment memory curAssignment;
-        // for (uint i = 0;i < list.length;i++){
-        //     string memory ttid = list[i].tid;
-        //     if (isStringEqual(tid, ttid)){
-        //         f=true;
-        //         curAssignment = list[i];
-        //         break;
-        //     }
-        // }
-        curAssignment = assignment_list[tid];
+        bool f = false;
+        Assignment memory curAssignment = assignment_list[tid];
         address[] memory delegatorList = record[tid];
-        for (uint i = 0;i<delegatorList.length;i++){
-            if (delegatorList[i]==addr){
-                f=true;
+        for (uint i = 0; i < delegatorList.length; i++) {
+            if (delegatorList[i] == addr) {
+                f = true;
             }
         }
-        if (f==false){
+        if (!f) {
             return;
         }
-
-        if (f==true){
-            require(msg.value>=curAssignment.price);
+    
+        // 折扣逻辑开始
+        uint maxDiscount = curAssignment.price / 5; // 最多折扣 20%
+        (, uint consumerPoint, ) = reward.getPoints(msg.sender); // 查询当前积分
+        uint discountUsed = consumerPoint > maxDiscount ? maxDiscount : consumerPoint;
+        uint actualPay = curAssignment.price - discountUsed;
+        require(msg.value >= actualPay, "Insufficient ETH after discount");
+        
+        // 更新积分（使用积分）
+        if (discountUsed > 0) {
+            reward.useConsumerPoints(msg.sender, discountUsed);
         }
+     
+        // 创建交易记录
+        tx_list[txid] = transaction(
+            curAssignment.tid,
+            txid,
+            curAssignment.producer,
+            addr,
+            msg.sender,
+            curAssignment.price,
+            curAssignment.producer_price,
+            curAssignment.delegator_price,
+            0);
 
-        tx_list[txid] = transaction(curAssignment.tid,txid,curAssignment.producer,addr,msg.sender,curAssignment.price,curAssignment.producer_price,curAssignment.delegator_price,0);
+        txids.push(txid);
         emit ConsumerAssignmentComing(addr,txid,msg.value, pubkey);
     }
 
@@ -241,18 +272,39 @@ contract AssignmentContract {
 
     //消费者确认收到 cti    
     function CheckCTI(string calldata txid) external payable  {
-        transaction memory trc;
+        //transaction memory trc;
+        transaction storage trc = tx_list[txid];
         trc = tx_list[txid];
         if (trc.status == 1){
             return;
         }
         require(msg.sender==trc.consumer);
         trc.status=1;
+
         address payable producer = payable(trc.producer);
         address payable delegator = payable(trc.delegator);
+
         producer.transfer(trc.producer_price);
         delegator.transfer(trc.delegator_price);
+        reward.reward(trc.producer, trc.consumer, trc.delegator);
     }
+
+    function hasConsumerBought(string calldata tid, address consumer) external view returns (bool) {
+    // 遍历交易记录查找已完成交易
+        for (uint i = 0; i < txids.length; i++) {
+            transaction memory txr = tx_list[txids[i]];
+            if (
+                keccak256(bytes(txr.tid)) == keccak256(bytes(tid)) &&
+                txr.consumer == consumer &&
+                txr.status == 1
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
     //消费者选择升级成为委托者
     function consumerUpgrade(string calldata txid,string calldata name, string calldata pubkey) external payable    {
@@ -394,19 +446,27 @@ contract RewardPointsContract {
     mapping(address => uint) public consumerPoints;
     mapping(address => uint) public delegatorPoints;
 
-    //完成交易之后 为所有的用户加积分
+    // 完成交易之后 为所有的用户加积分
     function reward(address producer, address consumer, address delegator) external {
         producerPoints[producer] += 10;
         consumerPoints[consumer] += 5;
         delegatorPoints[delegator] += 7;
     }
     
+    // 生产者激励
     function rewardProducer(address producer, uint points) external {
         producerPoints[producer] += points;
     }
 
+    // 委托者激励
     function rewardDelegator(address delegator, uint points) external {
         delegatorPoints[delegator] += points;
+    }
+
+    // 消费者激励：打折购买商品
+    function useConsumerPoints(address user, uint points) external {
+        require(consumerPoints[user] >= points, "Not enough points");
+        consumerPoints[user] -= points;
     }
 
     function getPoints(address user) external view returns (uint, uint, uint) {
