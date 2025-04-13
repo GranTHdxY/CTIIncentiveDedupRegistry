@@ -90,6 +90,56 @@ contract RegistCTI {
         }
         return hashes;
     }
+    
+    //排序后返回情报列表
+    struct CTIWithWeight {
+        string tid;
+        string tip;
+        address producer;
+        uint weight;
+        string cti_hash;
+        string[] tags;
+        int price;
+        int feedback_score;
+    }
+
+    constructor(address rewardAddr) {
+        reward = RewardPointsContract(rewardAddr);
+    }
+
+    function listCTIByWeight() external view returns (CTIWithWeight[] memory) {
+        uint len = allCtiHashes.length;
+        CTIWithWeight[] memory temp = new CTIWithWeight[](len);
+
+        for (uint i = 0; i < len; i++) {
+            CTI memory cti = allCtiHashes[i];
+            uint pScore = reward.getProducerPoints(cti.producer_address);
+            uint weight = pScore + uint(int(cti.feedback_score)) * 2; // ✳ 权重值：反馈 ×2 更重要
+            temp[i] = CTIWithWeight(
+                cti.tid,
+                cti.tip,
+                cti.producer_address,
+                weight,
+                cti.cti_hash,
+                cti.tags,
+                cti.price,
+                cti.feedback_score
+            );
+        }
+
+        // 插入排序：按 weight 降序
+        for (uint i = 0; i < len; i++) {
+            for (uint j = i + 1; j < len; j++) {
+                if (temp[j].weight > temp[i].weight) {
+                    CTIWithWeight memory tmp = temp[i];
+                    temp[i] = temp[j];
+                    temp[j] = tmp;
+                }
+            }
+        }
+
+        return temp;
+    }
 }
 
 contract AssignmentContract {
@@ -277,7 +327,8 @@ contract DelegatorContract {
 
     //注册成为委托者
     function Register(string calldata name,string calldata pubkey) payable external {
-        require(msg.value == 10000000000000000000);
+        require(msg.value == 10000000000000000000);// 注册成为委托者需要10eth
+        //require(msg.value == 0);
         payable(address(this)).transfer(msg.value);
         list.push(Delegator(name,msg.sender,10,pubkey,block.timestamp));
         DelegatorInserted[msg.sender]=true;
@@ -368,5 +419,9 @@ contract RewardPointsContract {
 
     function getDelegatorPoints(address addr) external view returns (uint) {
         return delegatorPoints[addr];
+    }
+
+    function getProducerPoints(address addr) external view returns (uint) {
+        return producerPoints[addr];
     }
 }

@@ -370,24 +370,24 @@
 		"compilationTarget": {
 			"ctiIncentiveDedupRegistry/ThreatTest11.sol": "AssignmentContract"
 		},
-		"evmVersion": "istanbul",
+		"evmVersion": "cancun",
 		"libraries": {},
 		"metadata": {
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": true,
+			"enabled": false,
 			"runs": 200
 		},
 		"remappings": []
 	},
 	"sources": {
 		"ctiIncentiveDedupRegistry/ThreatTest11.sol": {
-			"keccak256": "0x7945edd4b448bc0498a3fafd02cd5b6a092be28263e2f09dc0e6acdcddb61a87",
+			"keccak256": "0x5969945bd503e64db12e800d52353c70b6a2039a39545ffb92f81fe7242c7a38",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://f1b56a606d0076d26de9d43c0dfeb2d47203790ba951cfec9ec5bb4307ef405b",
-				"dweb:/ipfs/QmUo7ENbphgZux9eWqNkdmit2hhG64WnGRD9ZTYv8tXaix"
+				"bzz-raw://8da06a23ceba3bc488ed6a1d3171c0161cfbb6c1f6ef5c0d17230c89f5bdb197",
+				"dweb:/ipfs/QmdWrxJfCs6GbbScykVLWPE7zjZnn3esnCgLfBx9D6LmVc"
 			]
 		}
 	},
