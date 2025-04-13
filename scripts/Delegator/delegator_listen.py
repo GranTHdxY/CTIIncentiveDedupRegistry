@@ -7,7 +7,7 @@ w3 = Web3(Web3.HTTPProvider('http://127.0.0.1:7545'))
 
 print(w3.is_connected())
 
-contract_address = '0xAD9a0493d7dd94246e40C46D259D915b6e4Be41b'#合约部署地址
+contract_address = ''#合约部署地址
 
 contract_abi = [                                            
     {
