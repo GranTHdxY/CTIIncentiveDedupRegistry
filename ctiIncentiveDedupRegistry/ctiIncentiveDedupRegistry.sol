@@ -15,13 +15,9 @@ contract RegistCTI {
         string cti_hash;             // 情报的哈希值，用于验证数据
         string[] tags;               // 标签（如：漏洞、恶意软件等）
         int price;                   // 情报的价格
-        string ip;                   // 关联的IP地址
-        uint threat_score;           // 威胁评分（来自不同源的威胁分析评分）
-        string[] iocs;               // 受影响的IP、域名等IOCs
-        int confidence;              // 情报质量评分
-        int consumption_count;       // 被消费的次数（生产者激励）
-        int transaction_value;       // 总交易金额（生产者激励）
-        int validation_count;        // 被委托者验证的次数（委托者激励）
+        //int consumption_count;       // 被消费的次数（生产者激励）
+        //int transaction_value;       // 总交易金额（生产者激励）
+        //int validation_count;        // 被委托者验证的次数（委托者激励）
         uint feedback_score;         // 消费者对情报的反馈评分
     }
 
@@ -94,34 +90,46 @@ contract RegistCTI {
         return similarity >= similarityThreshold;
     }
 
-    // 注册新的情报
-     function Register(
-        string calldata tid,
-        string calldata tip,
-        string calldata cti_hash,
-        string[] calldata tags,
-        int price,
-        string calldata ip,
-        uint threat_score,
-        string[] calldata iocs,
-        int confidence
-    ) external {
-        require(!checkDuplicate(cti_hash), "CTI already uploaded");
+    struct CTIInput { //封装新的结构体用于避免栈溢出
+        string tid;
+        string tip;
+        string cti_hash;
+        string ip;
+        string[] tags;
+        string[] iocs;
+        int price;
+        uint threat_score;
+        int confidence;
+    }
 
-        bytes32 newComposite = generateCompositeHash(ip, tags, iocs);
-
+    // 提取重复检测逻辑为单独的函数
+    function isCTITooSimilar(bytes32 newComposite, string calldata tip) internal view returns (bool) {
+        CTI memory existing;
         for (uint i = 0; i < CTIByTipListGroup[tip].length; i++) {
-            CTI memory existing = CTIByTipListGroup[tip][i];
+            existing = CTIByTipListGroup[tip][i];
             bytes32 existingComposite = generateCompositeHash(existing.ip, existing.tags, existing.iocs);
             uint sim = detectCompositeSimilarity(newComposite, existingComposite);
             if (sim >= similarityThreshold) {
-                revert("CTI is too similar to an existing one");
+                return true;
             }
         }
+        return false;
+    }
 
-        existingCTIHashes[cti_hash] = true;
-
-        CTI memory cti = CTI(
+    // 注册情报前的准备工作
+    // 注册情报前的准备工作
+    function prepareCTI(
+        string calldata tid,
+        string calldata tip,
+        string calldata cti_hash,
+        string calldata ip,
+        string[] calldata tags,
+        int price,
+        uint threat_score,
+        string[] calldata iocs,
+        int confidence
+    ) internal view returns (CTI memory) {
+        return CTI(
             tid,
             tip,
             block.timestamp,
@@ -133,12 +141,40 @@ contract RegistCTI {
             threat_score,
             iocs,
             confidence,
-            0,
-            0,
-            0,
-            0
+            //0,  // 可选的初始化值
+            //0,  // 可选的初始化值
+            //0,  // 可选的初始化值
+            0   // 可选的初始化值
         );
+    }
 
+    // 注册新的情报
+    function Register(
+        string calldata tid,
+        string calldata tip,
+        string calldata cti_hash,
+        string[] calldata tags,
+        int price,
+        string calldata ip,
+        uint threat_score,
+        string[] calldata iocs,
+        int confidence
+    ) external {
+        
+        // 检查是否重复上传
+        require(!checkDuplicate(cti_hash), "CTI already uploaded");
+
+        // 生成合成哈希并检测是否与已有情报相似
+        bytes32 newComposite = generateCompositeHash(ip, tags, iocs);
+        require(!isCTITooSimilar(newComposite, tip), "CTI is too similar to an existing one");
+
+        // 更新已存在的哈希值记录
+        existingCTIHashes[cti_hash] = true;
+
+        // 调用 prepareCTI 函数准备 CTI 数据
+        CTI memory cti = prepareCTI(tid, tip, cti_hash, ip, tags, price, threat_score, iocs, confidence);
+
+        // 将情报存储在相应的映射中
         CTIByTidList[tid] = cti;
         CTIByTipListGroup[tip].push(cti);
     }
@@ -156,14 +192,14 @@ contract RegistCTI {
     // 更新消费次数和交易金额（激励用途）
     function UpdateConsumption(string calldata tid, int transactionAmount) external {
         require(CTIByTidList[tid].producer_address != address(0), "CTI does not exist");
-        CTIByTidList[tid].consumption_count += 1;
-        CTIByTidList[tid].transaction_value += transactionAmount;
+        //CTIByTidList[tid].consumption_count += 1;
+        //CTIByTidList[tid].transaction_value += transactionAmount;
     }
 
     // 更新验证次数（激励用途）
     function UpdateValidation(string calldata tid) external {
         require(CTIByTidList[tid].producer_address != address(0), "CTI does not exist");
-        CTIByTidList[tid].validation_count += 1;
+        //CTIByTidList[tid].validation_count += 1;
     }
 
     /// 消费者提交对情报的反馈评分（用于判断情报质量）
@@ -442,8 +478,7 @@ contract DelegatorContract {
 
     //注册成为委托者
     function Register(string calldata name,string calldata pubkey) payable external {
-        //require(msg.value == 10000000000000000000);
-        require(msg.value == 0);
+        require(msg.value == 10000000000000000000);
         payable(address(this)).transfer(msg.value);
         list.push(Delegator(name,msg.sender,10,pubkey,block.timestamp));
         DelegatorInserted[msg.sender]=true;

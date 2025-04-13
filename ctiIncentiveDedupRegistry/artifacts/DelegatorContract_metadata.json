@@ -175,7 +175,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"ctiIncentiveDedupRegistry/ThreatTest.sol": "DelegatorContract"
+			"ctiIncentiveDedupRegistry/ThreatTest1.sol": "DelegatorContract"
 		},
 		"evmVersion": "cancun",
 		"libraries": {},
@@ -183,19 +183,18 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": true,
+			"enabled": false,
 			"runs": 200
 		},
-		"remappings": [],
-		"viaIR": true
+		"remappings": []
 	},
 	"sources": {
-		"ctiIncentiveDedupRegistry/ThreatTest.sol": {
-			"keccak256": "0xfaf039500e176026206cce2f14afa795a4a1eccb7d8d98e6f1d7d6fc68bc241a",
+		"ctiIncentiveDedupRegistry/ThreatTest1.sol": {
+			"keccak256": "0xc8ae393fc58ff2a8e9edf6e24d4cb9b2e02c94b78c8dbd767589347d1cc3d164",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://132488e3dc82322745c4413fbb8aaf38f051f4535a90ca165d79fd4263429e30",
-				"dweb:/ipfs/QmQNzkM1Arx2DC52oWLhQaRzAZDn8YhVf9rHcrcYh1a6Z3"
+				"bzz-raw://09c22b3ebf70ed1b5d7127c30720e32712f3b461d45d1be4d724f49db653a74c",
+				"dweb:/ipfs/QmZVznzC54Ev2Rv4gZRzcJbD7TckGTeQyJ46UkJqPjcy1Z"
 			]
 		}
 	},
