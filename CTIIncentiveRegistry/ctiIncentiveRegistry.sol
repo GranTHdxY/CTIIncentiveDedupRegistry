@@ -118,42 +118,37 @@ contract RegistCTI {
     
     //按照权重给现有上传的CTI进行排序 方便消费者选择更有价值的情报
     function listCTIByWeight() external view returns (CTIWithWeight[] memory) {
-       uint len = allCtiHashes.length;
-       CTIWithWeight[] memory temp = new CTIWithWeight[](len);
+        uint len = allCtiHashes.length;
+        CTIWithWeight[] memory temp = new CTIWithWeight[](len);
 
-       uint[] memory weights = new uint[](len);
-       uint[] memory indices = new uint[](len); // 保存原始下标
+        for (uint i = 0; i < len; i++) {
+            CTI memory cti = allCtiHashes[i];
+            uint pScore = reward.getPoints(cti.producer_address);
+            uint weight = pScore + uint(int(cti.feedback_score)) * 2; // ✳ 权重值：反馈 ×2 更重要
+            temp[i] = CTIWithWeight(
+                cti.tid,
+                cti.tip,
+                cti.producer_address,
+                weight,
+                cti.cti_hash,
+                cti.price,
+                cti.feedback_score
+            );
+        }
 
-       for (uint i = 0; i < len; i++) {
-           CTI memory cti = allCtiHashes[i];
-           uint pScore = reward.getPoints(cti.producer_address);
-           uint weight = pScore + uint(int(cti.feedback_score)) * 2;
-           weights[i] = weight;
-           indices[i] = i;
+        // 插入排序：按 weight 降序
+        for (uint i = 0; i < len; i++) {
+            for (uint j = i + 1; j < len; j++) {
+                if (temp[j].weight > temp[i].weight) {
+                    CTIWithWeight memory tmp = temp[i];
+                    temp[i] = temp[j];
+                    temp[j] = tmp;
+                }
+            }
+        }
 
-           temp[i] = CTIWithWeight(
-               cti.tid,
-               cti.tip,
-               cti.producer_address,
-               weight,
-               cti.cti_hash,
-               cti.price,
-               cti.feedback_score
-           );
-       }
-
-       // 排序下标数组 indices，按照 weights 降序
-       reward.quickSort(indices, weights, 0, int(len) - 1);
-
-       // 按照排好序的下标重组 temp
-       CTIWithWeight[] memory sortedCTIs = new CTIWithWeight[](len);
-       for (uint i = 0; i < len; i++) {
-           sortedCTIs[i] = temp[indices[i]];
-       }
-
-       return sortedCTIs;
+        return temp;
     }
-
 }
 
 contract AssignmentContract {
@@ -217,14 +212,15 @@ contract AssignmentContract {
     function ConsumerSelectDelegator(
         string memory tid,
         string memory txid,
-        address consumer_addr,
+        address delegator_addr,//委托者的地址
         string calldata pubkey
     ) external payable {
         bool f = false;
         Assignment memory curAssignment = assignment_list[tid];
         address[] memory delegatorList = record[tid];
+        
         for (uint i = 0; i < delegatorList.length; i++) {
-            if (delegatorList[i] == consumer_addr) {
+            if (delegatorList[i] == delegator_addr) {
                 f = true;
             }
         }
@@ -237,19 +233,26 @@ contract AssignmentContract {
         uint consumerPoint= reward.getPoints(msg.sender); // 查询当前用户积分
         uint discountUsed = consumerPoint > maxDiscount ? maxDiscount : consumerPoint;
         uint actualPay = curAssignment.price - discountUsed;
+
+        //确保支付的金额足够
         require(msg.value >= actualPay, "Insufficient ETH after discount");
         
+        uint refundAmount = msg.value - actualPay; // 计算多余的支付金额
+        if (refundAmount > 0) {
+            payable(msg.sender).transfer(refundAmount); // 退还多余的 ETH
+        }
+
         // 更新积分（使用积分）
         if (discountUsed > 0) {
             reward.useConsumerPoints(msg.sender, discountUsed);
         }
-     
+
         // 创建交易记录
         tx_list[txid] = transaction(
             curAssignment.tid,
             txid,
             curAssignment.producer,
-            consumer_addr,
+            delegator_addr,
             msg.sender,
             curAssignment.price,
             curAssignment.producer_price,
@@ -257,7 +260,7 @@ contract AssignmentContract {
             0);
 
         txids.push(txid);
-        emit ConsumerAssignmentComing(consumer_addr,txid,msg.value, pubkey);
+        emit ConsumerAssignmentComing(delegator_addr,txid,actualPay, pubkey);
     }
 
     //委托者上传 cti 给消费者
@@ -273,6 +276,7 @@ contract AssignmentContract {
         if (trc.status == 1){
             return;
         }
+
         require(msg.sender==trc.consumer);
         trc.status=1;
 
@@ -374,8 +378,8 @@ contract DelegatorContract {
 
     //注册成为委托者
     function Register(string calldata name,string calldata pubkey) payable external {
-        require(msg.value == 10000000000000000000);// 注册成为委托者需要10eth
-        //require(msg.value == 0);
+        //require(msg.value == 10000000000000000000);// 注册成为委托者需要10eth
+        require(msg.value == 0);
         payable(address(this)).transfer(msg.value);
         list.push(Delegator(name,msg.sender,10,pubkey,block.timestamp));
         DelegatorInserted[msg.sender]=true;
@@ -407,14 +411,9 @@ contract DelegatorContract {
     function ListDelegator() external view returns (DelegatorWithPoints[] memory) {
         uint len = list.length;
         DelegatorWithPoints[] memory temp = new DelegatorWithPoints[](len);
-        uint[] memory points = new uint[](len);
-        uint[] memory indices = new uint[](len);
 
         for (uint i = 0; i < len; i++) {
             uint p = reward.getPoints(list[i].addr);
-            points[i] = p;
-            indices[i] = i;
-
             temp[i] = DelegatorWithPoints(
                 list[i].name,
                 list[i].addr,
@@ -424,16 +423,18 @@ contract DelegatorContract {
             );
         }
 
-        reward.quickSort(indices, points, 0, int(len) - 1);
-
-        DelegatorWithPoints[] memory sortedDelegators = new DelegatorWithPoints[](len);
         for (uint i = 0; i < len; i++) {
-            sortedDelegators[i] = temp[indices[i]];
+            for (uint j = i + 1; j < len; j++) {
+                if (temp[j].points > temp[i].points) {
+                    DelegatorWithPoints memory tmp = temp[i];
+                    temp[i] = temp[j];
+                    temp[j] = tmp;
+                }
+            }
         }
 
-        return sortedDelegators;
-}
-
+        return temp;
+    }
 
     receive()external payable{}
     fallback()external payable{}
@@ -466,29 +467,4 @@ contract RewardPointsContract {
         return userPoints[user];
     }
 
-    // 快速排序 用于按 积分/权重 对 委托者/CTI 进行排序
-    // 快速排序：对 values 降序排序，同时保持 indices 的同步变化
-    function quickSort(uint[] memory indices, uint[] memory values, int left, int right) public pure {
-        int i = left;
-        int j = right;
-        if (i >= j) return;
-
-        uint pivot = values[uint(left + (right - left) / 2)];
-
-        while (i <= j) {
-            while (values[uint(i)] > pivot) i++;
-            while (values[uint(j)] < pivot) j--;
-            if (i <= j) {
-                // swap values
-                (values[uint(i)], values[uint(j)]) = (values[uint(j)], values[uint(i)]);
-                // swap indices
-                (indices[uint(i)], indices[uint(j)]) = (indices[uint(j)], indices[uint(i)]);
-                i++;
-                j--;
-            }
-        }
-
-        if (left < j) quickSort(indices, values, left, j);
-        if (i < right) quickSort(indices, values, i, right);
-    }
 }

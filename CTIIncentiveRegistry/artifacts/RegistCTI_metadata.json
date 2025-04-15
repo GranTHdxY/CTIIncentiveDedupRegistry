@@ -515,11 +515,11 @@
 	},
 	"sources": {
 		"CTIIncentiveRegistry/ctiIncentiveRegistry.sol": {
-			"keccak256": "0x4d13643036bdf9a635bad4dd15476bd357a2dac9f2702577df04d0a9108b47d6",
+			"keccak256": "0xa1042fca23c0df7d0483d03bf90309586499a7c9294aacbfbe4bff0803700bd2",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://40d0a77d6f08a84f61400bdfe0e36edf32b8ecb4f79d0f363dd5673cf32d8f24",
-				"dweb:/ipfs/QmStmUxX5U3sitvLjFsxhfq2TKvg3rr2BvhtF8fTTMvbwX"
+				"bzz-raw://8029611041a8bae146ed372e5093e9a657da676a228969da53e5ba90d731649f",
+				"dweb:/ipfs/QmZP4rrgR4Az7vRXLgjSnSRZNhgypqNeSyyypA9dxWciAV"
 			]
 		}
 	},
