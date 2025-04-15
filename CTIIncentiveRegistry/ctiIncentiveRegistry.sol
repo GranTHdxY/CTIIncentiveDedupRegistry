@@ -74,7 +74,7 @@ contract RegistCTI {
         CTIByTidList[tid] = cti;
         CTIByTipListGroup[tip].push(cti);
         allCtiHashes.push(cti);
-        reward.rewardProducer(msg.sender, 5);//上传情报 为生产者加5积分
+        reward.rewardUser(msg.sender, 5);//上传情报并通过了去重验证 就为生产者加5积分
     }
     //根据 id 来查询 cti
     function GetCTIByTid(string calldata tid) external view returns (CTI memory) {
@@ -84,17 +84,8 @@ contract RegistCTI {
     function GetCTIByTip(string memory tip) external view returns (CTI[] memory) {
         return CTIByTipListGroup[tip];
     }
-
-    //列出当前所有上传过的情报的cti_hash
-    function GetAllCTIHashes() external view returns (string[] memory) {
-        string[] memory hashes = new string[](allCtiHashes.length);
-        for (uint i = 0; i < allCtiHashes.length; i++) {
-            hashes[i] = allCtiHashes[i].cti_hash;
-        }
-        return hashes;
-    }
     
-    function rateCTI(string calldata tid, uint8 score) external {
+    function rateCTI(string calldata tid, int score) external {
         require(score >= 1 && score <= 10, "Invalid score (1-10)");
         require(!hasScored[tid][msg.sender], "Already rated");
 
@@ -104,7 +95,7 @@ contract RegistCTI {
         CTI storage cti = CTIByTidList[tid];
         require(cti.producer_address != address(0), "CTI not found");
 
-        cti.feedback_score += int256(uint256(score));
+        cti.feedback_score += score;
         hasScored[tid][msg.sender] = true;
     }
 
@@ -116,7 +107,6 @@ contract RegistCTI {
         address producer;
         uint weight;
         string cti_hash;
-        string[] tags;
         int price;
         int feedback_score;
     }
@@ -125,40 +115,45 @@ contract RegistCTI {
         reward = RewardPointsContract(rewardAddr);
         assignment = AssignmentContract(assignmentAddr);
     }
-
+    
+    //按照权重给现有上传的CTI进行排序 方便消费者选择更有价值的情报
     function listCTIByWeight() external view returns (CTIWithWeight[] memory) {
-        uint len = allCtiHashes.length;
-        CTIWithWeight[] memory temp = new CTIWithWeight[](len);
+       uint len = allCtiHashes.length;
+       CTIWithWeight[] memory temp = new CTIWithWeight[](len);
 
-        for (uint i = 0; i < len; i++) {
-            CTI memory cti = allCtiHashes[i];
-            uint pScore = reward.getProducerPoints(cti.producer_address);
-            uint weight = pScore + uint(int(cti.feedback_score)) * 2; // ✳ 权重值：反馈 ×2 更重要
-            temp[i] = CTIWithWeight(
-                cti.tid,
-                cti.tip,
-                cti.producer_address,
-                weight,
-                cti.cti_hash,
-                cti.tags,
-                cti.price,
-                cti.feedback_score
-            );
-        }
+       uint[] memory weights = new uint[](len);
+       uint[] memory indices = new uint[](len); // 保存原始下标
 
-        // 插入排序：按 weight 降序
-        for (uint i = 0; i < len; i++) {
-            for (uint j = i + 1; j < len; j++) {
-                if (temp[j].weight > temp[i].weight) {
-                    CTIWithWeight memory tmp = temp[i];
-                    temp[i] = temp[j];
-                    temp[j] = tmp;
-                }
-            }
-        }
+       for (uint i = 0; i < len; i++) {
+           CTI memory cti = allCtiHashes[i];
+           uint pScore = reward.getPoints(cti.producer_address);
+           uint weight = pScore + uint(int(cti.feedback_score)) * 2;
+           weights[i] = weight;
+           indices[i] = i;
 
-        return temp;
+           temp[i] = CTIWithWeight(
+               cti.tid,
+               cti.tip,
+               cti.producer_address,
+               weight,
+               cti.cti_hash,
+               cti.price,
+               cti.feedback_score
+           );
+       }
+
+       // 排序下标数组 indices，按照 weights 降序
+       reward.quickSort(indices, weights, 0, int(len) - 1);
+
+       // 按照排好序的下标重组 temp
+       CTIWithWeight[] memory sortedCTIs = new CTIWithWeight[](len);
+       for (uint i = 0; i < len; i++) {
+           sortedCTIs[i] = temp[indices[i]];
+       }
+
+       return sortedCTIs;
     }
+
 }
 
 contract AssignmentContract {
@@ -203,7 +198,7 @@ contract AssignmentContract {
 
     //生产者选择委托者
     function ProducerSelectDelegator(
-        string calldata tid,
+        string calldata tid,//这里的tid应该是情报的
         address[] calldata delegators_address,
         uint price,
         uint producer_price,
@@ -222,14 +217,14 @@ contract AssignmentContract {
     function ConsumerSelectDelegator(
         string memory tid,
         string memory txid,
-        address addr,
+        address consumer_addr,
         string calldata pubkey
     ) external payable {
         bool f = false;
         Assignment memory curAssignment = assignment_list[tid];
         address[] memory delegatorList = record[tid];
         for (uint i = 0; i < delegatorList.length; i++) {
-            if (delegatorList[i] == addr) {
+            if (delegatorList[i] == consumer_addr) {
                 f = true;
             }
         }
@@ -239,7 +234,7 @@ contract AssignmentContract {
     
         // 折扣逻辑开始
         uint maxDiscount = curAssignment.price / 5; // 最多折扣 20%
-        (, uint consumerPoint, ) = reward.getPoints(msg.sender); // 查询当前积分
+        uint consumerPoint= reward.getPoints(msg.sender); // 查询当前用户积分
         uint discountUsed = consumerPoint > maxDiscount ? maxDiscount : consumerPoint;
         uint actualPay = curAssignment.price - discountUsed;
         require(msg.value >= actualPay, "Insufficient ETH after discount");
@@ -254,7 +249,7 @@ contract AssignmentContract {
             curAssignment.tid,
             txid,
             curAssignment.producer,
-            addr,
+            consumer_addr,
             msg.sender,
             curAssignment.price,
             curAssignment.producer_price,
@@ -262,7 +257,7 @@ contract AssignmentContract {
             0);
 
         txids.push(txid);
-        emit ConsumerAssignmentComing(addr,txid,msg.value, pubkey);
+        emit ConsumerAssignmentComing(consumer_addr,txid,msg.value, pubkey);
     }
 
     //委托者上传 cti 给消费者
@@ -412,9 +407,14 @@ contract DelegatorContract {
     function ListDelegator() external view returns (DelegatorWithPoints[] memory) {
         uint len = list.length;
         DelegatorWithPoints[] memory temp = new DelegatorWithPoints[](len);
+        uint[] memory points = new uint[](len);
+        uint[] memory indices = new uint[](len);
 
         for (uint i = 0; i < len; i++) {
-            uint p = reward.getDelegatorPoints(list[i].addr);
+            uint p = reward.getPoints(list[i].addr);
+            points[i] = p;
+            indices[i] = i;
+
             temp[i] = DelegatorWithPoints(
                 list[i].name,
                 list[i].addr,
@@ -424,64 +424,71 @@ contract DelegatorContract {
             );
         }
 
+        reward.quickSort(indices, points, 0, int(len) - 1);
+
+        DelegatorWithPoints[] memory sortedDelegators = new DelegatorWithPoints[](len);
         for (uint i = 0; i < len; i++) {
-            for (uint j = i + 1; j < len; j++) {
-                if (temp[j].points > temp[i].points) {
-                    DelegatorWithPoints memory tmp = temp[i];
-                    temp[i] = temp[j];
-                    temp[j] = tmp;
-                }
-            }
+            sortedDelegators[i] = temp[indices[i]];
         }
 
-        return temp;
-    }
+        return sortedDelegators;
+}
+
 
     receive()external payable{}
     fallback()external payable{}
 }
 
 contract RewardPointsContract {
-    mapping(address => uint) public producerPoints;
-    mapping(address => uint) public consumerPoints;
-    mapping(address => uint) public delegatorPoints;
+    // 统一的积分映射，存储每个用户的积分
+    mapping(address => uint) public userPoints;
 
-    // 完成交易之后 为所有的用户加积分
+    // 完成交易之后为所有的用户加积分
     function reward(address producer, address consumer, address delegator) external {
-        producerPoints[producer] += 10;
-        consumerPoints[consumer] += 5;
-        delegatorPoints[delegator] += 7;
-    }
-    
-    // 生产者激励
-    function rewardProducer(address producer, uint points) external {
-        producerPoints[producer] += points;
+        userPoints[producer] += 10; // 生产者加积分
+        userPoints[delegator] += 7;  // 委托者加积分
+        userPoints[consumer] += 5;   // 消费者加积分
     }
 
-    // 委托者激励
-    function rewardDelegator(address delegator, uint points) external {
-        delegatorPoints[delegator] += points;
+    // 为用户增加积分
+    function rewardUser(address user, uint points) external {
+        userPoints[user] += points;
     }
 
-    // 消费者激励：打折购买商品
+    // 使用积分：打折购买商品
     function useConsumerPoints(address user, uint points) external {
-        require(consumerPoints[user] >= points, "Not enough points");
-        consumerPoints[user] -= points;
+        require(userPoints[user] >= points, "Not enough points");
+        userPoints[user] -= points;
     }
 
-    function getPoints(address user) external view returns (uint, uint, uint) {
-        return (
-            producerPoints[user],
-            consumerPoints[user],
-            delegatorPoints[user]
-        );
+    // 获取用户的积分并返回用户地址与积分的对应关系
+    function getPoints(address user) external view returns (uint) {
+        return userPoints[user];
     }
 
-    function getDelegatorPoints(address addr) external view returns (uint) {
-        return delegatorPoints[addr];
-    }
+    // 快速排序 用于按 积分/权重 对 委托者/CTI 进行排序
+    // 快速排序：对 values 降序排序，同时保持 indices 的同步变化
+    function quickSort(uint[] memory indices, uint[] memory values, int left, int right) public pure {
+        int i = left;
+        int j = right;
+        if (i >= j) return;
 
-    function getProducerPoints(address addr) external view returns (uint) {
-        return producerPoints[addr];
+        uint pivot = values[uint(left + (right - left) / 2)];
+
+        while (i <= j) {
+            while (values[uint(i)] > pivot) i++;
+            while (values[uint(j)] < pivot) j--;
+            if (i <= j) {
+                // swap values
+                (values[uint(i)], values[uint(j)]) = (values[uint(j)], values[uint(i)]);
+                // swap indices
+                (indices[uint(i)], indices[uint(j)]) = (indices[uint(j)], indices[uint(i)]);
+                i++;
+                j--;
+            }
+        }
+
+        if (left < j) quickSort(indices, values, left, j);
+        if (i < right) quickSort(indices, values, i, right);
     }
 }

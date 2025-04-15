@@ -135,7 +135,7 @@
 					},
 					{
 						"internalType": "address",
-						"name": "addr",
+						"name": "consumer_addr",
 						"type": "address"
 					},
 					{
@@ -426,11 +426,11 @@
 	},
 	"sources": {
 		"CTIIncentiveRegistry/ctiIncentiveRegistry.sol": {
-			"keccak256": "0x19164e1d062a950e636f0bdaa6db172ae549e14a74c770a9c2ea4b5b494de7a4",
+			"keccak256": "0x4d13643036bdf9a635bad4dd15476bd357a2dac9f2702577df04d0a9108b47d6",
 			"license": "GPL-3.0",
 			"urls": [
-				"bzz-raw://7f366a281afdfbdcd69b8b43b1b553c461e748e80ae79c25bc751579c8a34ab3",
-				"dweb:/ipfs/QmX1G91mbwdDEWaWN5aLuqGxWTDRWaj2oGxwurnpCM98Fd"
+				"bzz-raw://40d0a77d6f08a84f61400bdfe0e36edf32b8ecb4f79d0f363dd5673cf32d8f24",
+				"dweb:/ipfs/QmStmUxX5U3sitvLjFsxhfq2TKvg3rr2BvhtF8fTTMvbwX"
 			]
 		}
 	},
